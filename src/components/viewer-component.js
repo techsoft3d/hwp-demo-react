@@ -4,6 +4,7 @@ import Communicator from 'communicator';
 
 /// props
 /// modelUri: uri to the model
+/// hwvReady(hwv): function to call when hwv is ready
 class ViewerComponent extends Component {
     constructor(props) {
         super(props);
@@ -24,6 +25,7 @@ class ViewerComponent extends Component {
         window.addEventListener('resize', () => {
             hwv.resizeCanvas();
         });
+        this.props.hwvReady(hwv);
     }
 
     render() {
