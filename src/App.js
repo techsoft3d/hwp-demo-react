@@ -1,7 +1,11 @@
+import './App.css';
+import ViewerComponent from './components/viewer-component';
 
 function App() {
   return (
-    <div>New App</div>
+    <div>
+      <ViewerComponent></ViewerComponent>
+    </div>
   );
 }
 
