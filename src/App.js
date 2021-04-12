@@ -12,12 +12,30 @@ class App extends Component {
     this.state = {
       hwv: null,
       currentTab: 1, // 1: Home, 2: ModelTree
+      cameraStatus: null,
     };
   }
 
   hwvReady(newHWV) {
     this.setState({
       hwv: newHWV,
+    }, () => {
+      this.state.hwv.setCallbacks({
+        sceneReady: () => {
+          this.setState({
+            cameraStatus: this.state.hwv.view.getCamera().toJson(),
+          });
+        },
+        modelStructureReady: () => {
+          // this.modelStructureIsReady = true;
+          // this.rootNodeId = newHwv.model.getAbsoluteRootNode();
+        },
+        camera: () => {
+          this.setState({
+            cameraStatus: this.state.hwv.view.getCamera().toJson(),
+          });
+        }
+      });
     });
     console.log("hwv ready");
   }
@@ -36,6 +54,27 @@ class App extends Component {
           onClick={() => { this.changeTab(value) }}
           type="button">{content}</button></li>;
     };
+    const cameraStatusContent = this.state.cameraStatus == null ? <p>Unavailable</p> :
+      <div>
+        <p className="mb-0"><strong>Position:</strong>
+          {this.state.cameraStatus.position.x.toFixed(2)}, {this.state.cameraStatus.position.y.toFixed(2)}, {this.state.cameraStatus.position.z.toFixed(2)}
+        </p>
+        <p className="mb-0"><strong>Target:</strong>
+          {this.state.cameraStatus.target.x.toFixed(2)}, {this.state.cameraStatus.target.y.toFixed(2)}, {this.state.cameraStatus.target.z.toFixed(2)}
+        </p>
+        <p className="mb-0"><strong>Up:</strong>
+          {this.state.cameraStatus.up.x.toFixed(2)}, {this.state.cameraStatus.up.y.toFixed(2)}, {this.state.cameraStatus.up.z.toFixed(2)}
+        </p>
+        <p className="mb-0">
+          <strong>Width:</strong> {this.state.cameraStatus.width.toFixed(2)} &nbsp;
+        <strong>Height:</strong> {this.state.cameraStatus.height.toFixed(2)}
+        </p>
+        <p className="mb-0">
+          <strong>Projection:</strong> {this.state.cameraStatus.projection.toFixed(2)} &nbsp;
+        <strong>NearLimit:</strong> {this.state.cameraStatus.nearLimit.toFixed(2)}
+        </p>
+        <p className="mb-0"><strong>Class Name:</strong> {this.state.cameraStatus.className}</p>
+      </div>;
     const homeTabContent = <div className={'tab-pane fade show ' + (this.state.currentTab === 1 ? 'active' : '')}>
       {/* Operator Selection */}
       <h5>Operator</h5>
@@ -47,7 +86,7 @@ class App extends Component {
       </select>
       {/* Camera Status */}
       <h5>Camera Status</h5>
-      <p>{"unavailable"}</p>
+      {cameraStatusContent}
     </div>;
     const modelStructureTabContent = <div className={'tab-pane fade show ' + (this.state.currentTab === 2 ? 'active' : '')}>
       <h5>Model Structure</h5>
