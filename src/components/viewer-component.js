@@ -1,41 +1,36 @@
-import { Component } from "react";
-import { v4 as uuidv4 } from "uuid";
-import microengine from '../assets/microengine.scs';
-import Communicator from "communicator";
-// import Communicator from "https://cdn.jsdelivr.net/gh/techsoft3d/hoops-web-viewer@2020.0.0/hoops_web_viewer.js?v=2021.0.0";
+import { Component } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+import Communicator from 'communicator';
 
+/// props
+/// modelUri: uri to the model
 class ViewerComponent extends Component {
     constructor(props) {
         super(props);
+        this.viewerId = uuidv4();
     }
 
     componentDidMount() {
-        console.log(microengine);
-        var hwv = new Communicator.WebViewer({
-            containerId: "viewerId",
-            endpointUri: microengine,
+        const hwv = new Communicator.WebViewer({
+            containerId: this.viewerId,
+            endpointUri: this.props.modelUri,
         });
-
         hwv.setCallbacks({
             sceneReady: () => {
-                hwv.view.setBackgroundColor(Communicator.Color.blue(), Communicator.Color.blue());
+                hwv.view.setBackgroundColor(Communicator.Color.white(), Communicator.Color.white());
             },
         });
-
         hwv.start();
+        window.addEventListener('resize', () => {
+            hwv.resizeCanvas();
+        });
     }
 
     render() {
         return (
-            <div className="bg-light position-relative" id="viewerId" style={{width: "500px", height: "500px"}}></div>
+            <div className="bg-light w-100 h-100 position-relative" id={this.viewerId}></div>
         );
     }
 }
-
-// function ViewerComponent() {
-//     return (
-//         <div>Web Viewer</div>
-//     );
-// }
 
 export default ViewerComponent;
