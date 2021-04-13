@@ -5,27 +5,36 @@ import logo from './assets/ts3d_logo.png';
 import ViewerComponent from './components/viewer-component';
 import Communicator from 'communicator';
 import MeasureOperator from './operators/measure_operator';
+import SelectOperator from './operators/select_operator';
+import ModelTreeComponent from './components/model-tree-component';
 
 class App extends Component {
   constructor(props) {
     super(props);
+    // Functions
     this.hwvReady = this.hwvReady.bind(this);
     this.changeTab = this.changeTab.bind(this);
     this.changeOperator = this.changeOperator.bind(this);
+    // Custom Operators
     this.selectOperatorId = null;
     this.measureOperatorId = null;
+    // State
     this.state = {
       hwv: null,
-      currentTab: 1, // 1: Home, 2: ModelTree
+      currentTab: 2, // 1: Home, 2: ModelTree
       cameraStatus: null,
       operator: 'Orbit',
+      isStructureReady: false,
     };
   }
 
+  // Callback when the new hwv is ready
   hwvReady(newHWV) {
-    // let selectOperator = new Communicator.Operator.SelectionOperator(newHWV);
+    // Custom Select Operator
+    let selectOperator = new SelectOperator(newHWV);
+    this.selectOperatorId = newHWV.registerCustomOperator(selectOperator);
+    // Custom Measure Operator
     let measureOperator = new MeasureOperator(newHWV);
-    // this.selectOperatorId = newHWV.registerCustomOperator(selectOperator);
     this.measureOperatorId = newHWV.registerCustomOperator(measureOperator);
 
     this.setState({
@@ -38,8 +47,9 @@ class App extends Component {
           });
         },
         modelStructureReady: () => {
-          // this.modelStructureIsReady = true;
-          // this.rootNodeId = newHwv.model.getAbsoluteRootNode();
+          this.setState({
+            isStructureReady: true,
+          });
         },
         camera: () => {
           this.setState({
@@ -60,8 +70,7 @@ class App extends Component {
       if (this.state.operator === "Area Select") {
         this.state.hwv.operatorManager.push(Communicator.OperatorId.AreaSelect);
       } else if (this.state.operator === "Select") {
-        // this.state.hwv.operatorManager.push(this.selectOperatorId);
-        this.state.hwv.operatorManager.push(Communicator.OperatorId.AreaSelect);
+        this.state.hwv.operatorManager.push(this.selectOperatorId);
       } else if (this.state.operator === "Measure") {
         this.state.hwv.operatorManager.push(this.measureOperatorId);
       }
@@ -118,7 +127,11 @@ class App extends Component {
     </div>;
     const modelStructureTabContent = <div className={'tab-pane fade show ' + (this.state.currentTab === 2 ? 'active' : '')}>
       <h5>Model Structure</h5>
-      <p >Model structure is not ready"</p>
+      {
+        this.state.isStructureReady
+          ? <ModelTreeComponent hwv={this.state.hwv}></ModelTreeComponent>
+          : <p>Model structure is not ready</p>
+      }
     </div>;
 
     return (

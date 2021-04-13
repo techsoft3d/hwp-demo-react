@@ -3,8 +3,8 @@ import { v4 as uuidv4 } from 'uuid';
 import Communicator from 'communicator';
 
 /// props
-/// modelUri: uri to the model
-/// hwvReady(hwv): function to call when hwv is ready
+/// modelUri: Uri to the model
+/// hwvReady(hwv): Function to call when hwv is ready
 class ViewerComponent extends Component {
     constructor(props) {
         super(props);
@@ -30,7 +30,7 @@ class ViewerComponent extends Component {
 
     render() {
         return (
-            <div className="bg-light w-100 h-100 position-relative" id={this.viewerId}></div>
+          <div className="bg-light w-100 h-100 position-relative" id={this.viewerId}></div>
         );
     }
 }

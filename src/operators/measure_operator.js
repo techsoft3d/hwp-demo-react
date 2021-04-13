@@ -17,8 +17,8 @@ class MeasureOperator {
 
                 if (this._activeIndication === null) {
                     this._activeIndication = new DistanceMarkup(
-                        this._hwv, 
-                        position, 
+                        this._hwv,
+                        position,
                         this._hwv.model.getNodeUnitMultiplier(selectionItem.getNodeId()));
                     markupManager.registerMarkup(this._activeIndication);
                 } else {
