@@ -21,7 +21,7 @@ class App extends Component {
     // State
     this.state = {
       hwv: null,
-      currentTab: 2, // 1: Home, 2: ModelTree
+      currentTab: 1, // 1: Home, 2: ModelTree
       cameraStatus: null,
       operator: 'Orbit',
       isStructureReady: false,
