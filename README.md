@@ -12,7 +12,7 @@ https://techsoft3d.github.io/hwp-demo-react-microengine/
 
 ## Get Started
 
-In the project directory, run:
+Make sure that NodeJS is installed. In the project directory, run:
 
 ### `npm install`
 
