@@ -102,6 +102,7 @@ class App extends Component {
         <p className="mb-0"><strong>Class Name:</strong> {this.state.cameraStatus.className}</p>
       </div>;
     const homeTabContent = <div className={'tab-pane fade show ' + (this.state.currentTab === 1 ? 'active' : '')}>
+      <h2>React Demo for Hoops Web Platform</h2>
       {/* Operator Selection */}
       <h5>Operator</h5>
       <select className="form-select mb-3" value={this.state.operator} onChange={this.changeOperator}>

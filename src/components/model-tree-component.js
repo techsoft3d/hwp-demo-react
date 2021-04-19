@@ -37,6 +37,7 @@ class ModelTreeComponent extends Component {
   render() {
     return (
       <div className="list-group">
+        <div className="d-none"></div>
         <ModelTreeItemComponent hwv={this.props.hwv} nodeId={this.rootNodeId} level={0} updateItemList={this.updateItemList}></ModelTreeItemComponent>
       </div>
     );
