@@ -23,7 +23,7 @@ externals: {
 ```
 - Now in each components’ js file, we can use the HWP Communicator by importing it like this: `import Communicator from 'communicator'`;
 
-## To Use this Reposiroty Locally
+## To Use this Repository Locally
 
 Make sure that NodeJS is installed. In the project directory, run:
 
