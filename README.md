@@ -1,4 +1,4 @@
-# HWP Demo React MicroEngine
+# HWP Demo React
 
 This is a demo for integrating [Hoops Communicator](https://www.techsoft3d.com/products/hoops/communicator/) with React framework.
 
@@ -7,10 +7,23 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ## Live Demo
 
 A live demo is running with GitHub Pages at:
-https://techsoft3d.github.io/hwp-demo-react-microengine/
+https://techsoft3d.github.io/hwp-demo-react/
 
+## How To Intergrate
+In order to intergrate Hoops Web Platform with React:
+- Make sure that NodeJS is installed.
+- Generate a new React project with `npx create-react-app [newApp]`
+- Run `npm run eject` to access dependency configuration files
+- Include the HWP script in **index.html**. Since it is an external library, we need to modify the webpack dependency configurations.
+- !!! Inside `config/webpack.config.js`, add the following to the **return()** function of **module.exports**:
+```
+externals: {
+  communicator: ‘Communicator'
+}
+```
+- Now in each components’ js file, we can use the HWP Communicator by importing it like this: `import Communicator from 'communicator'`;
 
-## Get Started
+## To Use this Reposiroty Locally
 
 Make sure that NodeJS is installed. In the project directory, run:
 
@@ -34,4 +47,4 @@ It correctly bundles React in production mode and optimizes the build for the be
 The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+See the official React documentation about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
