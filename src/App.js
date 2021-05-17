@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import './App.css';
-import microengine from './assets/microengine.scs';
+import aquo_bottle from './assets/aquo_bottle.scs';
 import logo from './assets/ts3d_logo.png';
 import ViewerComponent from './components/viewer-component';
 import Communicator from 'communicator';
@@ -82,24 +82,24 @@ class App extends Component {
     };
     const cameraStatusContent = this.state.cameraStatus == null ? <p>Unavailable</p> :
       <div>
-        <p className="mb-0"><strong>Position:</strong>
-          {this.state.cameraStatus.position.x.toFixed(2)}, {this.state.cameraStatus.position.y.toFixed(2)}, {this.state.cameraStatus.position.z.toFixed(2)}
+        <p className="mb-0"><strong>Position: </strong>
+          ({this.state.cameraStatus.position.x.toFixed(2)}, {this.state.cameraStatus.position.y.toFixed(2)}, {this.state.cameraStatus.position.z.toFixed(2)})
         </p>
-        <p className="mb-0"><strong>Target:</strong>
-          {this.state.cameraStatus.target.x.toFixed(2)}, {this.state.cameraStatus.target.y.toFixed(2)}, {this.state.cameraStatus.target.z.toFixed(2)}
+        <p className="mb-0"><strong>Target: </strong>
+          ({this.state.cameraStatus.target.x.toFixed(2)}, {this.state.cameraStatus.target.y.toFixed(2)}, {this.state.cameraStatus.target.z.toFixed(2)})
         </p>
-        <p className="mb-0"><strong>Up:</strong>
-          {this.state.cameraStatus.up.x.toFixed(2)}, {this.state.cameraStatus.up.y.toFixed(2)}, {this.state.cameraStatus.up.z.toFixed(2)}
-        </p>
-        <p className="mb-0">
-          <strong>Width:</strong> {this.state.cameraStatus.width.toFixed(2)} &nbsp;
-        <strong>Height:</strong> {this.state.cameraStatus.height.toFixed(2)}
+        <p className="mb-0"><strong>Up: </strong>
+          ({this.state.cameraStatus.up.x.toFixed(2)}, {this.state.cameraStatus.up.y.toFixed(2)}, {this.state.cameraStatus.up.z.toFixed(2)})
         </p>
         <p className="mb-0">
-          <strong>Projection:</strong> {this.state.cameraStatus.projection.toFixed(2)} &nbsp;
-        <strong>NearLimit:</strong> {this.state.cameraStatus.nearLimit.toFixed(2)}
+          <strong>Width: </strong> {this.state.cameraStatus.width.toFixed(2)} &nbsp;
+        <strong>Height: </strong> {this.state.cameraStatus.height.toFixed(2)}
         </p>
-        <p className="mb-0"><strong>Class Name:</strong> {this.state.cameraStatus.className}</p>
+        <p className="mb-0">
+          <strong>Projection: </strong> {this.state.cameraStatus.projection.toFixed(2)} &nbsp;
+        <strong>NearLimit: </strong> {this.state.cameraStatus.nearLimit.toFixed(2)}
+        </p>
+        <p className="mb-0"><strong>Class Name: </strong> {this.state.cameraStatus.className}</p>
       </div>;
     const homeTabContent = <div className={'tab-pane fade show ' + (this.state.currentTab === 1 ? 'active' : '')}>
       <h2>React Demo for Hoops Web Platform</h2>
@@ -129,7 +129,7 @@ class App extends Component {
         <div className="row p-0 m-0" style={{ height: "100vh" }}>
           {/* HWP WebViewer with Custom Component */}
           <div className="col-6 p-0 m-0 border-end">
-            <ViewerComponent modelUri={microengine} hwvReady={this.hwvReady}></ViewerComponent>
+            <ViewerComponent modelUri={aquo_bottle} hwvReady={this.hwvReady}></ViewerComponent>
           </div>
           {/* Control panel on the right side */}
           <div className="col-6 p-0 m-0 overflow-scroll" style={{ height: "100vh" }}>

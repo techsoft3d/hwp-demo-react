@@ -114,9 +114,10 @@ class ModelTreeItemComponent extends Component {
       (this.state.isCollapsed ? '' : 'caret-down');
     const selectionClass = 
       this.state.isSelected ? 'bg-primary text-white ' : '';
+    const nameDisplayClass = this.nodeName === '' ? 'd-none ' : 'd-flex ';
     return (
       <React.Fragment>
-        <div className={'list-group-item list-group-item-action d-flex py-1 ' + selectionClass} style={paddingStyle}>
+        <div className={'list-group-item list-group-item-action py-1 ' + selectionClass + nameDisplayClass} style={paddingStyle}>
           <div className={'py-1 ' + caretClass} onClick={this.collapseClick}></div>
           <div className="py-1 flex-fill cursor-pointer user-select-none" onClick={this.selectClick}>{this.nodeName}</div>
         </div>
