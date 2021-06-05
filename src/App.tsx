@@ -1,38 +1,37 @@
-import { Component } from 'react';
+import React from 'react';
 import './App.css';
 import aquo_bottle from './assets/aquo_bottle.scs';
 import logo from './assets/ts3d_logo.png';
+import { CameraStatus } from './data/camera-status';
 import ViewerComponent from './components/viewer-component';
-import Communicator from 'communicator';
 import ModelTreeComponent from './components/model-tree-component';
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    // Functions
-    this.hwvReady = this.hwvReady.bind(this);
-    this.changeTab = this.changeTab.bind(this);
-    this.changeOperator = this.changeOperator.bind(this);
-    // State
-    this.state = {
-      hwv: null,
-      currentTab: 1, // 1: Home, 2: ModelTree
-      cameraStatus: null,
-      operator: 'Orbit',
-      isStructureReady: false,
-    };
-  }
+type AppState = {
+  hwv: Communicator.WebViewer | null,
+  currentTab: number, // 1: Home, 2: ModelTree
+  cameraStatus: CameraStatus | null,
+  operator: string,
+  isStructureReady: boolean,
+};
+
+class App extends React.Component<{}, AppState> {
+  state: AppState = {
+    hwv: null,
+    currentTab: 1,
+    cameraStatus: null,
+    operator: 'Orbit',
+    isStructureReady: false,
+  };
 
   // Callback when the new hwv is ready
-  hwvReady(newHWV) {
-
+  onHwvReady = (newHWV: Communicator.WebViewer) => {
     this.setState({
       hwv: newHWV,
     }, () => {
-      this.state.hwv.setCallbacks({
+      this.state.hwv!.setCallbacks({
         sceneReady: () => {
           this.setState({
-            cameraStatus: this.state.hwv.view.getCamera().toJson(),
+            cameraStatus: this.state.hwv!.view.getCamera().toJson() as CameraStatus,
           });
         },
         modelStructureReady: () => {
@@ -42,14 +41,14 @@ class App extends Component {
         },
         camera: () => {
           this.setState({
-            cameraStatus: this.state.hwv.view.getCamera().toJson(),
+            cameraStatus: this.state.hwv!.view.getCamera().toJson() as CameraStatus,
           });
         }
       });
     });
   }
 
-  changeOperator(event) {
+  changeOperator(event: React.ChangeEvent<HTMLSelectElement>) {
     this.setState({
       operator: event.target.value,
     }, () => {
@@ -66,14 +65,14 @@ class App extends Component {
     });
   }
 
-  changeTab(newTab) {
+  changeTab(newTab: number) {
     this.setState({
       currentTab: newTab,
     });
   }
 
   render() {
-    const navItem = (value, content) => {
+    const navItem = (value: number, content: string) => {
       return <li className="nav-item">
         <button
           className={'nav-link ' + (this.state.currentTab === value ? 'active' : '')}
@@ -119,7 +118,7 @@ class App extends Component {
       <h5>Model Structure</h5>
       {
         this.state.isStructureReady
-          ? <ModelTreeComponent hwv={this.state.hwv}></ModelTreeComponent>
+          ? <ModelTreeComponent hwv={this.state.hwv!}></ModelTreeComponent>
           : <p>Model structure is not ready</p>
       }
     </div>;
@@ -129,7 +128,7 @@ class App extends Component {
         <div className="row p-0 m-0" style={{ height: "100vh" }}>
           {/* HWP WebViewer with Custom Component */}
           <div className="col-6 p-0 m-0 border-end">
-            <ViewerComponent modelUri={aquo_bottle} hwvReady={this.hwvReady}></ViewerComponent>
+            <ViewerComponent modelUri={aquo_bottle} onHwvReady={this.onHwvReady}></ViewerComponent>
           </div>
           {/* Control panel on the right side */}
           <div className="col-6 p-0 m-0 overflow-scroll" style={{ height: "100vh" }}>

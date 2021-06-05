@@ -1,16 +1,13 @@
-import React, { Component } from "react";
-import Communicator from 'communicator';
+import React from "react";
 import '../styles/caret.css';
 
-/// props
-/// hwv: The web viewer
-class ModelTreeComponent extends Component {
-  constructor(props) {
-    super(props);
-    this.updateItemList = this.updateItemList.bind(this);
-    this.rootNodeId = this.props.hwv.model.getAbsoluteRootNode();
-    this.itemList = {};  // A record of all the items in this tree
-  }
+type MTCProps = {
+  hwv: Communicator.WebViewer
+};
+
+class ModelTreeComponent extends React.Component<MTCProps, {}> {
+  readonly rootNodeId = this.props.hwv.model.getAbsoluteRootNode();
+  itemList: { [nodeId: number]: ModelTreeItemComponent } = {};  // A record of all the items in this tree
 
   componentDidMount() {
     for (const nodeId in this.itemList) {
@@ -24,13 +21,15 @@ class ModelTreeComponent extends Component {
         }
         selectionEvents.forEach(selectionEvent => {
           const nodeId = selectionEvent.getSelection().getNodeId();
-          this.itemList[nodeId].setSelect(true);
+          if (nodeId != null) {
+            this.itemList[nodeId].setSelect(true);
+          }
         });
       },
     });
   }
 
-  updateItemList(nodeId, treeItemComponent) {
+  updateItemList = (nodeId: Communicator.NodeId, treeItemComponent: ModelTreeItemComponent) => {
     this.itemList[nodeId] = treeItemComponent;
   }
 
@@ -49,27 +48,38 @@ class ModelTreeComponent extends Component {
 /// nodeId: ID of the model node
 /// level: Depth in the tree
 /// updateItemList: callback to update the record of items
-class ModelTreeItemComponent extends Component {
-  constructor(props) {
-    super(props);
-    this.setSelect = this.setSelect.bind(this);
-    this.selectClick = this.selectClick.bind(this);
-    this.collapseClick = this.collapseClick.bind(this);
-    this.childrenId = [];
-    this.nodeName = "";
-    this.state = {
-      isSelected: false,
-      isCollapsed: false,
-    };
+type MTICProps = {
+  hwv: Communicator.WebViewer,
+  nodeId: Communicator.NodeId,
+  level: number,
+  updateItemList: (nodeId: Communicator.NodeId, treeItemComponent: ModelTreeItemComponent) => void,
+};
 
-    switch (this.props.hwv.model.getNodeType(this.props.nodeId)) {
+type MTICStates = {
+  isSelected: boolean,
+  isCollapsed: boolean,
+};
+
+class ModelTreeItemComponent extends React.Component<MTICProps, MTICStates> {
+  childrenId: Communicator.NodeId[] = [];
+  nodeName = "";
+  state: MTICStates = {
+    isSelected: false,
+    isCollapsed: false,
+  };
+
+  constructor(props: MTICProps) {
+    super(props);
+    
+    switch (props.hwv.model.getNodeType(props.nodeId)) {
       case Communicator.NodeType.Part:
       case Communicator.NodeType.PartInstance:
       case Communicator.NodeType.BodyInstance:
       case Communicator.NodeType.AssemblyNode: {
-        this.nodeName = this.props.hwv.model.getNodeName(this.props.nodeId);
-        this.childrenId = this.props.hwv.model.getNodeChildren(this.props.nodeId);
-        this.props.updateItemList(this.props.nodeId, this);
+        let temp_nodeName = props.hwv.model.getNodeName(props.nodeId);
+        this.nodeName = temp_nodeName ? temp_nodeName : "";
+        this.childrenId = props.hwv.model.getNodeChildren(props.nodeId);
+        props.updateItemList(props.nodeId, this);
         break;
       }
       default:
@@ -77,19 +87,19 @@ class ModelTreeItemComponent extends Component {
     }
   }
 
-  setSelect(isSelected) {
+  setSelect = (isSelected: boolean) => {
     this.setState({
       isSelected: isSelected,
     });
   }
 
-  selectClick(event) {
+  selectClick = (event: React.MouseEvent) => {
     this.props.hwv.selectPart(
       !this.state.isSelected ? this.props.nodeId : null
     );
   }
 
-  collapseClick(event) {
+  collapseClick = (event: React.MouseEvent) => {
     this.setState({
       isCollapsed: !this.state.isCollapsed,
     });
@@ -112,9 +122,9 @@ class ModelTreeItemComponent extends Component {
     const caretClass =
       (this.childrenId.length > 0 ? 'caret ' : '') +
       (this.state.isCollapsed ? '' : 'caret-down');
-    const selectionClass = 
+    const selectionClass =
       this.state.isSelected ? 'bg-primary text-white ' : '';
-    const nameDisplayClass = this.nodeName === '' ? 'd-none ' : 'd-flex ';
+    const nameDisplayClass = this.nodeName.length <= 0 ? 'd-none ' : 'd-flex ';
     return (
       <React.Fragment>
         <div className={'list-group-item list-group-item-action py-1 ' + selectionClass + nameDisplayClass} style={paddingStyle}>

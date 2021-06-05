@@ -159,9 +159,9 @@ module.exports = function (webpackEnv) {
   };
 
   return {
-    externals: {
-      communicator: 'Communicator'
-    },
+    // externals: {
+    //   communicator: 'Communicator'
+    // },
     mode: isEnvProduction ? 'production' : isEnvDevelopment && 'development',
     // Stop compilation early in production
     bail: isEnvProduction,
