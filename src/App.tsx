@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.css';
+import './styles/App.css';
 import aquo_bottle from './assets/aquo_bottle.scs';
 import logo from './assets/ts3d_logo.png';
 import { CameraStatus } from './data/camera-status';
@@ -48,7 +48,7 @@ class App extends React.Component<{}, AppState> {
     });
   }
 
-  changeOperator(event: React.ChangeEvent<HTMLSelectElement>) {
+  changeOperator = (event: React.ChangeEvent<HTMLSelectElement>) => {
     this.setState({
       operator: event.target.value,
     }, () => {
@@ -65,7 +65,7 @@ class App extends React.Component<{}, AppState> {
     });
   }
 
-  changeTab(newTab: number) {
+  changeTab = (newTab: number) => {
     this.setState({
       currentTab: newTab,
     });
