@@ -16,8 +16,12 @@ In order to integrate Hoops Web Platform with React using JavaScript:
 - Make sure that NodeJS is installed.
 - Generate a new React project with `npx create-react-app [newApp]`
 - Run `npm run eject` to access dependency configuration files
-- Include the HWP script in **index.html**. Since it is an external library, we need to modify the webpack dependency configurations.
-- !!! Inside `config/webpack.config.js`, add the following to the **return()** function of **module.exports**:
+- In the **index.html**, include the `hoops_web_viewer.js` with a **\<script>** tag. 
+  ```html
+  <script crossorigin type="text/javascript"
+      src="https://cdn.jsdelivr.net/gh/techsoft3d/hoops-web-viewer@2020.0.0/hoops_web_viewer.js"></script>
+  ```
+- !!! Since `hoops_web_viewer.js` is an external library, we need to modify the webpack dependency configurations. Inside `config/webpack.config.js`, add the following to the **return()** function of **module.exports**:
   ```javascript
   externals: {
     communicator: ‘Communicator'
