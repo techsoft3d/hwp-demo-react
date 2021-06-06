@@ -1,8 +1,9 @@
 # HWP Demo React
 
-This is a demo for integrating [Hoops Communicator](https://www.techsoft3d.com/products/hoops/communicator/) with React framework.
+This is a demo for integrating [Hoops Communicator](https://www.techsoft3d.com/products/hoops/communicator/)(HWP) with React framework.
+The project is bootstrapped with [Create React App](https://create-react-app.dev/docs/adding-typescript).
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+**This branch is showcasing the implementation using JavaScript. For TypeScript implementation, please checkout the [TypeScript Branch](https://github.com/techsoft3d/hwp-demo-react/tree/typescript).**
 
 ## Live Demo
 
@@ -10,18 +11,22 @@ A live demo is running with GitHub Pages at:
 https://techsoft3d.github.io/hwp-demo-react/
 
 ## How To Intergrate
-In order to intergrate Hoops Web Platform with React:
+In order to integrate Hoops Web Platform with React using JavaScript:
+
 - Make sure that NodeJS is installed.
 - Generate a new React project with `npx create-react-app [newApp]`
 - Run `npm run eject` to access dependency configuration files
 - Include the HWP script in **index.html**. Since it is an external library, we need to modify the webpack dependency configurations.
 - !!! Inside `config/webpack.config.js`, add the following to the **return()** function of **module.exports**:
-```
-externals: {
-  communicator: ‘Communicator'
-}
-```
-- Now in each components’ js file, we can use the HWP Communicator by importing it like this: `import Communicator from 'communicator'`;
+  ```javascript
+  externals: {
+    communicator: ‘Communicator'
+  }
+  ```
+- Now in each components’ js file, we can use the HWP Communicator by importing it like this: 
+  ```javascript
+  import Communicator from 'communicator'`;
+  ```
 
 ## To Use this Repository Locally
 
@@ -43,8 +48,5 @@ You will also see any lint errors in the console.
 
 Builds the app for production to the `build` folder.\
 It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
 See the official React documentation about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
