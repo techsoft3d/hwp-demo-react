@@ -29,7 +29,7 @@ In order to integrate Hoops Web Platform with React using JavaScript:
   ```
 - Now in each components’ js file, we can use the HWP Communicator by importing it like this: 
   ```javascript
-  import Communicator from 'communicator'`;
+  import Communicator from 'communicator';
   ```
 
 ## To Use this Repository Locally
